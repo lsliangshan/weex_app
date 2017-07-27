@@ -1,8 +1,8 @@
 {
-    "AppName": "WeexApp",
+    "AppName": "得二新闻",
     "Version": "0.1",
     "BuildVersion": "0.1.0",
-    "AppId": "cn.com.zhaopin.weex",
+    "AppId": "com.dei2.AppNews",
     "CodeSign": "",
     "Profile": "",
     "WeexBundle": "index.weex.js"

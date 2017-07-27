@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div @androidback="back">
-      <router-view style="flex: 1; background-color: #f5f5f5;" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(state.device.height)) + 'px'}"></router-view>
+      <router-view style="flex: 1;" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(state.device.height)) + 'px'}"></router-view>
     </div>
   </div>
 </template>
@@ -17,13 +17,14 @@
     margin: 0;
     padding: 0;
   }
-  .wrapper { align-items: center;}
+  .wrapper { align-items: center; }
   .title { padding-top:40px; padding-bottom: 40px; font-size: 48px; }
   .logo { width: 360px; height: 156px; }
   .desc { padding-top: 20px; color:#888; font-size: 24px;}
 </style>
 
 <script>
+  import STORE from './store'
   const animation = weex.requireModule('animation')
   export default {
     data () {
@@ -34,7 +35,7 @@
     },
     computed: {
       state () {
-        return this.$store.state
+        return STORE.state
       }
     },
     methods: {

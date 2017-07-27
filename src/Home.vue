@@ -1,5 +1,5 @@
 <template>
-  <div class="home" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(state.device.height)) + 'px'}">
+  <div class="home">
     <text>Home</text>
   </div>
 </template>
@@ -9,11 +9,13 @@
     width: 750px;
     align-items: center;
     justify-content: center;
+    background-color: #a986ff;
   }
 </style>
 
 <script>
   import * as types from './store/mutation-types'
+  import STORE from './store'
 
   const animation = weex.requireModule('animation')
   const dom = weex.requireModule('dom')
@@ -26,7 +28,7 @@
     },
     computed: {
       state () {
-        return this.$store.state
+        return STORE.state
       }
     },
     methods: {
