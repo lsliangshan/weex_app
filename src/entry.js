@@ -58,6 +58,6 @@ Vue.mixin(mixins)
 // }, App))
 new Vue(Vue.util.extend({ el: '#root', router, store }, App))
 
-router.push('/')
+router.push('/login')
 // App.el = '#root'
 // export default new Vue(App)

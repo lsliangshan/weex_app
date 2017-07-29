@@ -22,7 +22,6 @@ export default {
         this.jump(to.replace(/.*\/([a-zA-Z0-9_-]*)\.js$/,'$1').toLowerCase())
       } else {
         let baseUrl = getBaseURL(this)
-        console.log('BASEURL: ', baseUrl)
         navigator.push({
           url: baseUrl + to,
           animated: "true"

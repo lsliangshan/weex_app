@@ -37,20 +37,46 @@
 const stream = weex.requireModule('stream')
 const baseURL = 'https://hacker-news.firebaseio.com/v0'
 
-export function fetch (path) {
-  return new Promise((resolve, reject) => {
-    stream.fetch({
-      method: 'GET',
-      url: `${baseURL}/${path}.json`,
-      type: 'json'
-    }, (response) => {
-      if (response.status == 200) {
-        resolve(response.data)
-      }
-      else {
-        reject(response)
-      }
-    }, () => {})
+// export function fetch (path) {
+//   return new Promise((resolve, reject) => {
+//     stream.fetch({
+//       method: 'GET',
+//       url: `${baseURL}/${path}.json`,
+//       type: 'json'
+//     }, (response) => {
+//       if (response.status == 200) {
+//         resolve(response.data)
+//       }
+//       else {
+//         reject(response)
+//       }
+//     }, () => {})
+//   })
+// }
+
+export function fetch (opts) {
+  let body = ''
+  if (typeof opts.body !== 'string') {
+    body = JSON.stringify(opts.body)
+  } else {
+    body = opts.body
+  }
+  let headers = {}
+  if (opts.hasOwnProperty('method') && opts.method.toLowerCase() === 'post') {
+    headers['Content-Type'] = 'application/json'
+  } else {
+    headers['Content-Type'] = 'application/x-www-form-urlencoded'
+  }
+  stream.fetch({
+    method: opts.method || 'GET',
+    url: opts.url,
+    headers: Object.assign({}, headers, opts.headers),
+    type: opts.type || 'json',
+    body: body
+  }, (response) => {
+    opts.callback && opts.callback(response)
+  }, (response) => {
+    opts.progress && opts.progress(response)
   })
 }
 
