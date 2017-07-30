@@ -44,8 +44,6 @@ if (env.platform !== 'Web') {
   Vue.use(Vuex)
 }
 
-console.log('....', env)
-
 const store = new Vuex.Store({
   actions,
   mutations: mutations.mutations,

@@ -1,9 +1,9 @@
 <template>
   <div class="login-container">
-    <image class="bg-image" src="http://static.dei2.com/app/bg.jpg" resize="cover" @load="imageLoaded" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(state.device.height * 2)) + 'px'}"></image>
-    <div class="login-content" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(state.device.height * 2)) + 'px'}">
+    <image class="bg-image" src="http://static.dei2.com/app/bg.jpg" ref="bgImage" @load="imageLoaded" resize="cover" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(750 / state.device.width * state.device.height)) + 'px'}"></image>
+    <div class="login-content" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(750 / state.device.width * state.device.height)) + 'px'}">
       <div class="poetry-container" ref="poetryContainer">
-        <div class="poetry-item-container" ref="poetryItem" :style="{height: poetryHeight + 'px'}" v-for="(item, index) in poetry.split(';').reverse()" :key="item">
+        <div class="poetry-item-container" ref="poetryItem" v-for="(item, index) in poetry.split(';').reverse()" :key="item">
           <text class="poetry-item" ref="poetryItemText">{{item}}</text>
         </div>
       </div>
@@ -14,10 +14,11 @@
 <style scoped>
   .login-container {
     width: 750px;
-    align-items: center;
-    justify-content: center;
+    /*height: 1036px;*/
+    /*align-items: center;*/
+    /*justify-content: center;*/
   }
-  .login-container .bg-image {
+  .bg-image {
     width: 750px;
     opacity: 0;
     -webkit-transition: all .4s ease-in-out;
@@ -42,7 +43,7 @@
     flex-direction: row;
     justify-content: flex-end;
 
-    opacity: 0;
+    opacity: 1;
     -webkit-transition: all .3s ease-in-out;
     -moz-transition: all .3s ease-in-out;
     -ms-transition: all .3s ease-in-out;
@@ -85,12 +86,16 @@
 
 <script>
   import STORE from '../store'
+
+  const animation = weex.requireModule('animation')
+  const dom = weex.requireModule('dom')
   export default {
     data () {
       return {
         poetryHeight: 0,
-        poetry: 'IE 在文字排版方面一直是先驱;用来将文本按照指定的样式渲染出来;如果需要保留头尾空白;暂时只能通过数据绑定写头尾空格'
+        poetry: 'IE 在文字排版方面一直是先驱;用来将文本按照指定的样式渲染出来;如果需要保留头尾空白;暂时只能通过数据绑定写头尾空格',
 //        poetry: '锄禾日当午;汗滴禾下土;谁知盘中餐;粒粒皆辛苦'
+        showBgImage: false
       }
     },
     computed: {
@@ -101,11 +106,24 @@
     methods: {
       imageLoaded: function (e) {
         const that = this
-        e.target.style.opacity = 1
 
-        setTimeout(function () {
-          that.pageLoaded()
-        }, 400)
+        if (this.state.platform === 'web') {
+          e.target.style.opacity = 1
+          setTimeout(function () {
+            that.pageLoaded()
+          }, 400)
+        } else {
+          animation.transition(this.$refs.bgImage, {
+            styles: {
+              opacity: 1
+            },
+            duration: 400,
+            timingFunction: 'ease-in-out',
+            delay: 2000
+          }, function () {
+            that.pageLoaded()
+          })
+        }
       },
       pageLoaded: function () {
         const that = this
@@ -122,11 +140,22 @@
               if (that.state.platform === 'web') {
                 allPoetryItems[i].$el.style.height = that.$refs.poetryItemText[i].$el.getBoundingClientRect().height + 'px'
               } else {
-                console.log('...22..', that.$refs.poetryItemText[i])
 //                allPoetryItems[i].style.height = '800'
-                that.poetryHeight = 800
+//                that.poetryHeight = 800
+                dom.getComponentRect(that.$refs.poetryItemText[i], option => {
+                  console.log('........', option)
+                  animation.transition(allPoetryItems[i], {
+                    styles: {
+                      height: Number(option.size.height)
+                    },
+                    duration: 800,
+                    timingFunction: 'ease-in-out',
+                    delay: 0
+                  }, function () {
+                  })
+                })
               }
-            }, (allPoetryItems.length - i) * 800)
+            }, (allPoetryItems.length - 1 - i) * 800)
           }
         }
 
