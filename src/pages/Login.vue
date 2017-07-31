@@ -7,6 +7,19 @@
           <text class="poetry-item" ref="poetryItemText">{{item}}</text>
         </div>
       </div>
+      <div class="login-form-container">
+        <div class="login-form" id="slick-login">
+          <div class="login-form-item" ref="formPhonenum">
+            <input type="text" autofocus class="form-item phonenum placeholder" placeholder="请输入手机号" return-key-type="next" @return="formNext"/>
+          </div>
+          <div class="login-form-item" ref="formPassword">
+            <input type="password" ref="inputPassword" class="form-item password placeholder" placeholder="请输入密码" return-key-type="go" @return="formSubmit"/>
+          </div>
+          <div class="login-form-item">
+            <text>登录</text>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -37,7 +50,7 @@
   .poetry-container {
     position: absolute;
     right: 30px;
-    top: 30px;
+    top: 50px;
     width: 320px;
     /*min-height: 500px;*/
     flex-direction: row;
@@ -69,18 +82,46 @@
     transition: all .8s ease-in-out;
   }
   .poetry-item {
-    color: rgb(33, 76, 142);
+    color: rgb(95, 169, 212);
     font-size: 40px;
     width: 60px;
     text-align: center;
   }
-  .poetry-item-mask {
+  .login-form-container {
     position: absolute;
-    left: 0;
-    top: 0;
-    width: 60px;
-    height: 100%;
-    /*background-color: #a986ff;*/
+    left: 30px;
+    top: 400px;
+    /*width: 500px;*/
+    padding: 30px;
+    /*min-height: 400px;*/
+    border-radius: 8px;
+    background-color: transparent;
+  }
+  .login-form-item {
+    /*width: 500px;*/
+    height: 68px;
+    margin-top: 14px;
+    flex-direction: row;
+    opacity: 0;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+  }
+  .form-item {
+    width: 400px;
+    height: 68px;
+    font-size: 28px;
+    color: rgba(110, 169, 192, 1);
+    placeholder-color: rgba(110, 169, 192, 0.6);
+    outline: none;
+    background-color: transparent;
+    /*border: 1px solid rgba(110, 169, 192, 0.8);*/
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(100, 169, 192, 0.6);
+    padding-left: 20px;
+    border-radius: 6px;
   }
 </style>
 
@@ -93,9 +134,12 @@
     data () {
       return {
         poetryHeight: 0,
-        poetry: 'IE 在文字排版方面一直是先驱;用来将文本按照指定的样式渲染出来;如果需要保留头尾空白;暂时只能通过数据绑定写头尾空格',
-//        poetry: '锄禾日当午;汗滴禾下土;谁知盘中餐;粒粒皆辛苦'
-        showBgImage: false
+//        poetry: 'IE 在文字排版方面一直是先驱;用来将文本按照指定的样式渲染出来;如果需要保留头尾空白;暂时只能通过数据绑定写头尾空格',
+        poetry: '锄禾日当午;汗滴禾下土;谁知盘中餐;粒粒皆辛苦',
+        loginInfo: {
+          phonenum: '',
+          password: ''
+        }
       }
     },
     computed: {
@@ -137,13 +181,12 @@
           let allPoetryItems = that.$refs.poetryItem
           for (let i = allPoetryItems.length - 1; i >= 0; i--) {
             setTimeout(function () {
-              if (that.state.platform === 'web') {
-                allPoetryItems[i].$el.style.height = that.$refs.poetryItemText[i].$el.getBoundingClientRect().height + 'px'
-              } else {
+//              if (that.state.platform === 'web') {
+//                allPoetryItems[i].$el.style.height = that.$refs.poetryItemText[i].$el.getBoundingClientRect().height + 'px'
+//              } else {
 //                allPoetryItems[i].style.height = '800'
 //                that.poetryHeight = 800
                 dom.getComponentRect(that.$refs.poetryItemText[i], option => {
-                  console.log('........', option)
                   animation.transition(allPoetryItems[i], {
                     styles: {
                       height: Number(option.size.height)
@@ -154,14 +197,43 @@
                   }, function () {
                   })
                 })
-              }
+//              }
             }, (allPoetryItems.length - 1 - i) * 800)
           }
         }
+        
+        function formInit () {
+          animation.transition(that.$refs['formPhonenum'], {
+            styles: {
+              opacity: 1
+            },
+            duration: 400,
+            timingFunction: 'ease-in-out',
+            delay: 200
+          }, function () {
+          })
+          animation.transition(that.$refs['formPassword'], {
+            styles: {
+              opacity: 1
+            },
+            duration: 400,
+            timingFunction: 'ease-in-out',
+            delay: 2 * 200
+          }, function () {
+          })
+        }
 
         setTimeout(function () {
+          formInit()
           poetryRun()
         }, 800)
+      },
+      formNext: function (evt) {
+        console.log('>>> 表单下一步 >>>', evt)
+        this.$refs['inputPassword'].focus()
+      },
+      formSubmit: function (evt) {
+        console.log('>>> 表单提交 >>>>', evt)
       }
     }
   }

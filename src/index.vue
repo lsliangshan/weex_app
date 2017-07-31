@@ -16,6 +16,7 @@
     height: 100%;
     margin: 0;
     padding: 0;
+    font-family: sans-serif;
   }
   .wrapper { align-items: center; }
   .title { padding-top:40px; padding-bottom: 40px; font-size: 48px; }
