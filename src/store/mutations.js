@@ -36,6 +36,9 @@
 
 // import store from './'
 import * as types from './mutation-types'
+import router from '../router'
+
+const navigator = weex.requireModule('navigator')
 
 export const mutations = {
   [types.SHOW_POPUP] (state, data) {
@@ -45,5 +48,23 @@ export const mutations = {
   },
   [types.HIDE_POPUP] (state) {
     state.popup.shown = false
+  },
+  [types.LOGIN] (state, data) {
+    state.isLogin = true
+    state.userInfo = data.userInfo
+    if (state.platform.toLowerCase() === 'web') {
+      router.back()
+    } else {
+      navigator.pop({
+        animated: "true"
+      }, event => {
+      })
+    }
+    console.log('...... 登录：', state)
+  },
+  [types.LOGOUT] (state) {
+    console.log('...... 退出登录')
+    state.isLogin = false
+    state.userInfo = {}
   }
 }

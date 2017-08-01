@@ -1,5 +1,6 @@
 const navigator = weex.requireModule('navigator')
-const getBaseURL = require('../utils/base-url.js').getBaseURL
+const modal = weex.requireModule('modal')
+// const getBaseURL = require('../utils/base-url.js').getBaseURL
 export default {
   methods: {
     jump (to) {
@@ -21,13 +22,45 @@ export default {
       if (this.$store.state.platform.toLowerCase() === 'web') {
         this.jump(to.replace(/.*\/([a-zA-Z0-9_-]*)\.js$/,'$1').toLowerCase())
       } else {
-        let baseUrl = getBaseURL(this)
         navigator.push({
-          url: baseUrl + to,
+          url: weex.config.bundleUrl.replace(/^(.*:\d{2,5})\/?.*$/, '$1/dist') + to,
           animated: "true"
         }, event => {
         })
       }
+    },
+    lsToast (opts) {
+      modal.toast({
+        message: opts.message,
+        duration: opts.duration || 0.3
+      })
+    },
+    lsAlert (opts) {
+      modal.alert({
+        message: opts.message,
+        okTitle: opts.okTitle || '确认',
+        duration: opts.duration || 0.3
+      }, function (value) {
+        opts.callback && opts.callback(value)
+      })
+    },
+    lsConfirm (opts) {
+      modal.confirm({
+        message: opts.message,
+        okTitle: opts.okTitle || '确认',
+        cancelTitle: opts.cancelTitle || '取消',
+        duration: opts.duration || 0.3
+      }, function (value) {
+        opts.callback && opts.callback(value)
+      })
+    },
+    lsPrompt (opts) {
+      modal.prompt({
+        message: opts.message,
+        duration: opts.duration || 0.3
+      }, function (value) {
+        opts.callback && opts.callback(value)
+      })
     }
   }
 }

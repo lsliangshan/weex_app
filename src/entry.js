@@ -58,6 +58,20 @@ Vue.mixin(mixins)
 // }, App))
 new Vue(Vue.util.extend({ el: '#root', router, store }, App))
 
-router.push('/login')
+router.push('/')
+
+// router.push(store.state.isLogin ? '/' : '/login')
+// if (!store.state.isLogin) {
+//   const navigator = weex.requireModule('navigator')
+//   if (store.state.platform.toLowerCase() === 'web') {
+//     router.push('/login')
+//   } else {
+//     navigator.push({
+//       url: weex.config.bundleUrl.replace(/^(.*:\d{2,5})\/?.*$/, '$1/dist/pages/Login.js'),
+//       animated: "true"
+//     }, event => {
+//     })
+//   }
+// }
 // App.el = '#root'
 // export default new Vue(App)

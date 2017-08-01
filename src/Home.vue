@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <text>Home</text>
+    <text @click="navigateTo('/pages/Login.js')">Home</text>
   </div>
 </template>
 

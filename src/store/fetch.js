@@ -54,13 +54,20 @@ const baseURL = 'https://hacker-news.firebaseio.com/v0'
 //   })
 // }
 
+function isEmptyObj (obj) {
+  var t;
+  for (t in obj)
+    return !1
+  return !0
+}
+
 export function fetch (opts) {
-  let body = ''
-  if (typeof opts.body !== 'string') {
-    body = JSON.stringify(opts.body)
-  } else {
-    body = opts.body
-  }
+  // let body = ''
+  // if (typeof opts.body !== 'string') {
+  //   body = JSON.stringify(opts.body)
+  // } else {
+  //   body = opts.body
+  // }
   let headers = {}
   if (opts.hasOwnProperty('method') && opts.method.toLowerCase() === 'post') {
     headers['Content-Type'] = 'application/json'
@@ -72,7 +79,7 @@ export function fetch (opts) {
     url: opts.url,
     headers: Object.assign({}, headers, opts.headers),
     type: opts.type || 'json',
-    body: body
+    body: opts.data
   }, (response) => {
     opts.callback && opts.callback(response)
   }, (response) => {

@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <image class="bg-image" src="http://static.dei2.com/app/bg.jpg" ref="bgImage" @load="imageLoaded" resize="cover" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(750 / state.device.width * state.device.height)) + 'px'}"></image>
+    <image class="bg-image" src="http://static.dei2.com/app/bg.jpg" ref="bgImage" @load="imageLoaded" resize="cover" :class="state.platform=='web'?'shown':''" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(750 / state.device.width * state.device.height)) + 'px'}"></image>
     <div class="login-content" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(750 / state.device.width * state.device.height)) + 'px'}">
       <div class="poetry-container" ref="poetryContainer">
         <div class="poetry-item-container" ref="poetryItem" v-for="(item, index) in poetry.split(';').reverse()" :key="item">
@@ -10,13 +10,13 @@
       <div class="login-form-container">
         <div class="login-form" id="slick-login">
           <div class="login-form-item" ref="formPhonenum">
-            <input type="text" autofocus class="form-item phonenum placeholder" placeholder="请输入手机号" return-key-type="next" @return="formNext"/>
+            <input type="text" autofocus class="form-item phonenum placeholder" placeholder="请输入手机号" return-key-type="next" @return="formNext" v-model="loginInfo.phonenum"/>
           </div>
           <div class="login-form-item" ref="formPassword">
-            <input type="password" ref="inputPassword" class="form-item password placeholder" placeholder="请输入密码" return-key-type="go" @return="formSubmit"/>
+            <input type="password" ref="inputPassword" class="form-item password placeholder" placeholder="请输入密码" return-key-type="go" @return="formSubmit" v-model="loginInfo.password" />
           </div>
-          <div class="login-form-item">
-            <text>登录</text>
+          <div class="login-form-item btn-login" ref="formBtn">
+            <text class="btn-login-text" @click="doLogin">登录</text>
           </div>
         </div>
       </div>
@@ -39,6 +39,9 @@
     -ms-transition: all .4s ease-in-out;
     -o-transition: all .4s ease-in-out;
     transition: all .4s ease-in-out;
+  }
+  .bg-image.shown {
+    opacity: 1;
   }
   .login-content {
     position: absolute;
@@ -108,6 +111,28 @@
     -o-transition: all .3s ease-in-out;
     transition: all .3s ease-in-out;
   }
+  .btn-login {
+    padding: 0;
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+    transform: scale(0);
+  }
+  .btn-login-text {
+    line-height: 66px;
+    width: 400px;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(110, 169, 192, 0.6);
+    color: rgb(95, 169, 212);
+    border-radius: 8px;
+  }
+  .btn-login-text:active {
+    background-color: rgb(95, 169, 212);
+    color: #ffffff;
+  }
   .form-item {
     width: 400px;
     height: 68px;
@@ -126,10 +151,16 @@
 </style>
 
 <script>
+  import * as types from '../store/mutation-types'
   import STORE from '../store'
+  import router from '../router'
+  import { fetch } from '../store/fetch'
 
   const animation = weex.requireModule('animation')
+  const navigator = weex.requireModule('navigator')
+  const storage = weex.requireModule('storage')
   const dom = weex.requireModule('dom')
+  const modal = weex.requireModule('modal')
   export default {
     data () {
       return {
@@ -163,7 +194,7 @@
             },
             duration: 400,
             timingFunction: 'ease-in-out',
-            delay: 2000
+            delay: 0
           }, function () {
             that.pageLoaded()
           })
@@ -221,6 +252,16 @@
             delay: 2 * 200
           }, function () {
           })
+          animation.transition(that.$refs['formBtn'], {
+            styles: {
+              opacity: 1,
+              transform: 'scale(1)'
+            },
+            duration: 400,
+            timingFunction: 'cubic-bezier(.215,.61,.355,1)',
+            delay: 3 * 200
+          }, function () {
+          })
         }
 
         setTimeout(function () {
@@ -234,6 +275,63 @@
       },
       formSubmit: function (evt) {
         console.log('>>> 表单提交 >>>>', evt)
+        this.doLogin()
+      },
+      doLogin: function (evt) {
+        const that = this
+        if (this.loginInfo.phonenum.trim() === '') {
+          // 手机号不能为空
+          modal.toast({
+            message: '手机号不能为空',
+            duration: 0.8
+          })
+        } else if (!/^1[35789]\d{9}$/.test(this.loginInfo.phonenum)) {
+          // 手机号不合法
+          modal.toast({
+            message: '手机号不合法',
+            duration: 0.8
+          })
+        } else if (this.loginInfo.password.trim() === '') {
+          // 密码不能为空
+          modal.toast({
+            message: '密码不能为空',
+            duration: 0.8
+          })
+        } else {
+          // 登录
+          fetch({
+            url: this.state.baseRequestUrl + 'login?username=' + this.loginInfo.phonenum + '&password=' + this.loginInfo.password,
+//            data: {
+//              username: this.loginInfo.phonenum,
+//              password: this.loginInfo.password
+//            },
+            callback: function (res) {
+              console.log('>>>>>>', JSON.stringify(res))
+              if (Number(res.data.code) === 200) {
+                STORE.commit(types.LOGIN, {
+                  userInfo: res.data.data
+                })
+                modal.toast({
+                  message: '登录成功',
+                  duration: 0.8
+                })
+
+                storage.setItem('weexUserInfo', JSON.stringify(res.data.data), event => {
+                  console.log('保存storage成功：', event)
+                })
+
+                if (that.state.platform.toLowerCase() === 'web') {
+                  that.$router.back()
+                } else {
+                  navigator.pop({
+                    animated: "true"
+                  }, event => {
+                  })
+                }
+              }
+            }
+          })
+        }
       }
     }
   }

@@ -38,10 +38,18 @@ import Vuex from 'vuex'
 import * as actions from './actions'
 import * as mutations from './mutations'
 import * as getters from './getters'
+import * as types from './mutation-types'
 
 const env = weex.config.env || WXEnvironment
 if (env.platform !== 'Web') {
   Vue.use(Vuex)
+}
+
+function isEmptyObj (obj) {
+  var t;
+  for (t in obj)
+    return !1
+  return !0
 }
 
 const store = new Vuex.Store({
@@ -49,6 +57,9 @@ const store = new Vuex.Store({
   mutations: mutations.mutations,
   getters,
   state: {
+    baseRequestUrl: 'http://talkapi.dei2.com/index/',
+    isLogin: false, // 是否为登录状态
+    userInfo: {},   // 登录用户信息
     banner: {
       shown: true
     },
@@ -89,6 +100,23 @@ const store = new Vuex.Store({
       title: '弹出窗口',
       shown: false
     }
+  }
+})
+
+const storage = weex.requireModule('storage')
+storage.getItem('weexUserInfo', event => {
+  let _data = ''
+  try {
+    _data = JSON.parse(event.data)
+  } catch (err) {
+    _data = event.data
+  }
+  if (!isEmptyObj(_data) && _data !== 'undefined') {
+    store.commit(types.LOGIN, {
+      userInfo: _data
+    })
+  } else {
+    store.commit(types.LOGOUT)
   }
 })
 
