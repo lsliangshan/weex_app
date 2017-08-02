@@ -22,8 +22,12 @@ export default {
       if (this.$store.state.platform.toLowerCase() === 'web') {
         this.jump(to.replace(/.*\/([a-zA-Z0-9_-]*)\.js$/,'$1').toLowerCase())
       } else {
+        // modal.alert({
+        //   message: weex.config.bundleUrl.replace(/^(.*bundlejs).*$/, '$1') + to
+        //   // message: weex.config.bundleUrl.replace(/^(.*:\d{2,5})\/?.*$/, '$1/dist') + to
+        // })
         navigator.push({
-          url: weex.config.bundleUrl.replace(/^(.*:\d{2,5})\/?.*$/, '$1/dist') + to,
+          url: weex.config.bundleUrl.replace(/^(.*bundlejs).*$/, '$1') + to,
           animated: "true"
         }, event => {
         })

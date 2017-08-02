@@ -37,5 +37,10 @@
 export const SHOW_POPUP = 'SHOW_POPUP'
 export const HIDE_POPUP = 'HIDE_POPUP'
 
+export const INIT_LOGIN_INFO = 'INIT_LOGIN_INFO'
+export const RESET_LOGIN_INFO = 'RESET_LOGIN_INFO'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
+
+export const NAVIGATE_BACK = 'NAVIGATE_BACK'
+export const NAVIGATE_TO = 'NAVIGATE_TO'

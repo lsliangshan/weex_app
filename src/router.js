@@ -37,7 +37,7 @@ import Router from 'vue-router'
 import Home from './Home.vue'
 import NotFound from './404.vue'
 import Login from './pages/Login.vue'
-// import Profile from './pages/Profile.vue'
+import Profile from './pages/Profile.vue'
 
 Vue.use(Router)
 
@@ -46,10 +46,10 @@ const routes = [
     path: '/home',
     component: Home
   },
-  // {
-  //   path: '/profile',
-  //   component: Profile
-  // },
+  {
+    path: '/profile',
+    component: Profile
+  },
   {
     path: '/login',
     component: Login

@@ -58,6 +58,9 @@ const store = new Vuex.Store({
   getters,
   state: {
     baseRequestUrl: 'http://talkapi.dei2.com/index/',
+    storageKey: {
+      login: 'weexUserInfo'
+    },
     isLogin: false, // 是否为登录状态
     userInfo: {},   // 登录用户信息
     banner: {
@@ -99,7 +102,8 @@ const store = new Vuex.Store({
     popup: {
       title: '弹出窗口',
       shown: false
-    }
+    },
+    history: []
   }
 })
 
@@ -112,11 +116,11 @@ storage.getItem('weexUserInfo', event => {
     _data = event.data
   }
   if (!isEmptyObj(_data) && _data !== 'undefined') {
-    store.commit(types.LOGIN, {
+    store.commit(types.INIT_LOGIN_INFO, {
       userInfo: _data
     })
   } else {
-    store.commit(types.LOGOUT)
+    store.commit(types.RESET_LOGIN_INFO)
   }
 })
 

@@ -34,11 +34,13 @@
  * Created by liangshan on 2017/7/13.
  */
 
-// import store from './'
+import store from './'
 import * as types from './mutation-types'
 import router from '../router'
 
 const navigator = weex.requireModule('navigator')
+const storage = weex.requireModule('storage')
+// const Stack = new BroadcastChannel('Avengers')
 
 export const mutations = {
   [types.SHOW_POPUP] (state, data) {
@@ -49,22 +51,64 @@ export const mutations = {
   [types.HIDE_POPUP] (state) {
     state.popup.shown = false
   },
-  [types.LOGIN] (state, data) {
+  [types.INIT_LOGIN_INFO] (state, data) {
     state.isLogin = true
     state.userInfo = data.userInfo
+  },
+  [types.RESET_LOGIN_INFO] (state) {
+    state.isLogin = false
+    state.userInfo = {}
+  },
+  [types.LOGIN] (state, data) {
+    storage.setItem(state.storageKey.login, JSON.stringify(data.userInfo), event => {
+      state.isLogin = true
+      state.userInfo = data.userInfo
+      // if (state.platform.toLowerCase() === 'web') {
+      //   router.back()
+      // } else {
+      //   navigator.pop({
+      //     animated: "true"
+      //   }, event => {
+      //   })
+      // }
+      // Stack.postMessage('login-state-changed', {
+      //   isLogin: true
+      // })
+      store.commit(types.NAVIGATE_BACK)
+    })
+  },
+  [types.LOGOUT] (state) {
+    storage.removeItem(state.storageKey.login, event => {
+      state.isLogin = false
+      state.userInfo = {}
+
+      // Stack.postMessage('login-state-changed', {
+      //   isLogin: false
+      // })
+    })
+  },
+  [types.NAVIGATE_BACK] (state) {
     if (state.platform.toLowerCase() === 'web') {
       router.back()
     } else {
       navigator.pop({
         animated: "true"
       }, event => {
+
       })
     }
-    console.log('...... 登录：', state)
   },
-  [types.LOGOUT] (state) {
-    console.log('...... 退出登录')
-    state.isLogin = false
-    state.userInfo = {}
+  [types.NAVIGATE_TO] (state, data) {
+    if (state.platform.toLowerCase() === 'web') {
+      if (router) {
+        router.push(data.to.replace(/.*\/([a-zA-Z0-9_-]*)\.js$/,'$1').toLowerCase())
+      }
+    } else {
+      navigator.push({
+        url: weex.config.bundleUrl.replace(/^(.*bundlejs).*$/, '$1') + data.to,
+        animated: "true"
+      }, event => {
+      })
+    }
   }
 }

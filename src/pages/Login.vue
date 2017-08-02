@@ -158,7 +158,6 @@
 
   const animation = weex.requireModule('animation')
   const navigator = weex.requireModule('navigator')
-  const storage = weex.requireModule('storage')
   const dom = weex.requireModule('dom')
   const modal = weex.requireModule('modal')
   export default {
@@ -308,26 +307,19 @@
             callback: function (res) {
               console.log('>>>>>>', JSON.stringify(res))
               if (Number(res.data.code) === 200) {
-                STORE.commit(types.LOGIN, {
-                  userInfo: res.data.data
-                })
                 modal.toast({
                   message: '登录成功',
                   duration: 0.8
                 })
 
-                storage.setItem('weexUserInfo', JSON.stringify(res.data.data), event => {
-                  console.log('保存storage成功：', event)
+                STORE.commit(types.LOGIN, {
+                  userInfo: res.data.data
                 })
-
-                if (that.state.platform.toLowerCase() === 'web') {
-                  that.$router.back()
-                } else {
-                  navigator.pop({
-                    animated: "true"
-                  }, event => {
-                  })
-                }
+              } else {
+                modal.toast({
+                  message: '登录失败',
+                  duration: 0.8
+                })
               }
             }
           })
