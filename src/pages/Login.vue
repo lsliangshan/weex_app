@@ -306,7 +306,6 @@
 //              password: this.loginInfo.password
 //            },
             callback: function (res) {
-              console.log('>>>>>>', JSON.stringify(res))
               if (Number(res.data.code) === 200) {
                 modal.toast({
                   message: '登录成功',

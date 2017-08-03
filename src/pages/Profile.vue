@@ -84,7 +84,6 @@
   import * as types from '../store/mutation-types'
 //  import STORE from '../store'
   import router from '../router'
-  import { fetch } from '../store/fetch'
 
   const env = weex.config.env || WXEnvironment
   const animation = weex.requireModule('animation')
