@@ -25,7 +25,8 @@
 </style>
 
 <script>
-  import STORE from './store'
+//  import STORE from './store'
+  const env = weex.config.env || WXEnvironment
   const animation = weex.requireModule('animation')
   export default {
     data () {
@@ -36,7 +37,7 @@
     },
     computed: {
       state () {
-        return STORE.state
+        return (env.platform.toLowerCase() === 'web' ? this.$store.state : global.store._vm._data.$$state)
       }
     },
     methods: {

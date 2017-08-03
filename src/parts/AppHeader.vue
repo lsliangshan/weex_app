@@ -71,8 +71,9 @@
 </style>
 
 <script>
-  import STORE from '../store'
-const navigator = weex.requireModule('navigator')
+//  import STORE from '../store'
+  const env = weex.config.env || WXEnvironment
+  const navigator = weex.requireModule('navigator')
   export default {
     props: ['dataState', 'dataTitle', 'dataCanGoBack', 'dataShowUserContainer'],
     data () {
@@ -82,8 +83,7 @@ const navigator = weex.requireModule('navigator')
     },
     computed: {
       state () {
-        console.log('...........................')
-        return STORE.state
+        return (env.platform.toLowerCase() === 'web' ? this.$store.state : global.store._vm._data.$$state)
       },
       canGoBack () {
         if (this.$route) {

@@ -125,3 +125,7 @@ storage.getItem('weexUserInfo', event => {
 })
 
 export default store
+
+if (env.platform.toLowerCase() !== 'web') {
+  global.store = store
+}

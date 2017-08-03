@@ -81,12 +81,12 @@
 
 <script>
   import AppHeader from '../parts/AppHeader.vue'
-
   import * as types from '../store/mutation-types'
-  import STORE from '../store'
+//  import STORE from '../store'
   import router from '../router'
   import { fetch } from '../store/fetch'
 
+  const env = weex.config.env || WXEnvironment
   const animation = weex.requireModule('animation')
   const navigator = weex.requireModule('navigator')
   const storage = weex.requireModule('storage')
@@ -100,11 +100,17 @@
     },
     computed: {
       state () {
-        return STORE.state
+        return (env.platform.toLowerCase() === 'web' ? this.$store.state : global.store._vm._data.$$state)
       }
     },
     methods: {
       logout () {
+        let STORE
+        if (env.platform.toLowerCase() === 'web') {
+          STORE = this.$store
+        } else {
+          STORE = global.store
+        }
         STORE.commit(types.LOGOUT)
         STORE.commit(types.NAVIGATE_BACK)
       }

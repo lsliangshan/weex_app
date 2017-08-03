@@ -20,7 +20,7 @@
 
 <script>
   import * as types from './store/mutation-types'
-  import STORE from './store'
+//  import STORE from './store'
 
   import AppHeader from './parts/AppHeader.vue'
 
@@ -28,6 +28,7 @@
 //  const dom = weex.requireModule('dom')
 //  var modal = weex.requireModule('modal')
 //  var navigator = weex.requireModule('navigator')
+  const env = weex.config.env || WXEnvironment
   export default {
     data () {
       return {
@@ -35,7 +36,7 @@
     },
     computed: {
       state () {
-        return STORE.state
+        return (env.platform.toLowerCase() === 'web' ? this.$store.state : global.store._vm._data.$$state)
       }
     },
     methods: {

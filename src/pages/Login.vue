@@ -152,10 +152,11 @@
 
 <script>
   import * as types from '../store/mutation-types'
-  import STORE from '../store'
+//  import STORE from '../store'
   import router from '../router'
   import { fetch } from '../store/fetch'
 
+  const env = weex.config.env || WXEnvironment
   const animation = weex.requireModule('animation')
   const navigator = weex.requireModule('navigator')
   const dom = weex.requireModule('dom')
@@ -174,7 +175,7 @@
     },
     computed: {
       state () {
-        return STORE.state
+        return (env.platform.toLowerCase() === 'web' ? this.$store.state : global.store._vm._data.$$state)
       }
     },
     methods: {
@@ -312,6 +313,12 @@
                   duration: 0.8
                 })
 
+                let STORE
+                if (env.platform.toLowerCase() === 'web') {
+                  STORE = that.$store
+                } else {
+                  STORE = global.store
+                }
                 STORE.commit(types.LOGIN, {
                   userInfo: res.data.data
                 })
