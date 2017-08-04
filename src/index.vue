@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper" :style="{height: (state.platform=='web'?((state.device.height - 120 - 88) / state.device.dpr):(750 / state.device.width * state.device.height)) + 'px'}">
-    <app-header :data-state="state" data-title="新闻" :data-show-user-container="true"></app-header>
+    <app-header :data-state="state" :data-show-user-container="true"></app-header>
     <div @androidback="back" class="view-container" :style="{height: (state.platform=='web'?((state.device.height - 120 - 88) / state.device.dpr):(750 / state.device.width * state.device.height - 120 - 88)) + 'px'}">
       <router-view style="flex: 1;"></router-view>
     </div>
@@ -40,6 +40,7 @@
 <script>
   import AppHeader from './parts/AppHeader.vue'
   import Tabbar from './components/tabbar.vue'
+  import * as types from './store/mutation-types'
 //  import STORE from './store'
   const env = weex.config.env || WXEnvironment
   const animation = weex.requireModule('animation')
@@ -69,7 +70,15 @@
         }
       },
       tabBarOnClick (e) {
-        console.log('切换tab: ', e)
+        let STORE
+        if (env.platform.toLowerCase() === 'web') {
+          STORE = this.$store
+        } else {
+          STORE = global.store
+        }
+        STORE.commit(types.SET_HEADER_TITLE, {
+          title: e.title
+        })
         this.tabTo(e.src)
       }
     },

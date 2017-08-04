@@ -110,5 +110,9 @@ export const mutations = {
       }, event => {
       })
     }
+  },
+  [types.SET_HEADER_TITLE] (state, data) {
+    // 修改header中的title
+    data.hasOwnProperty('title') && (state.appHeader.title = data.title)
   }
 }

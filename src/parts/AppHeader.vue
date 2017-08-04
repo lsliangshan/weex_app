@@ -1,6 +1,6 @@
 <template>
   <div class="app-header-container" :style="{'background-color': state.appHeader.theme}">
-    <text class="app-header" :style="{'color': state.appHeader.color}">{{dataTitle || state.app.name}}</text>
+    <text class="app-header" :style="{'color': state.appHeader.color}">{{dataTitle || state.appHeader.title}}</text>
     <div class="nav-back-container" v-if="canGoBack" @click="back">
       <image class="nav-back" src="http://static.dei2.com/imgs/icon-back.png" resize="cover"></image>
     </div>

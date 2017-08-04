@@ -1,6 +1,6 @@
 <template>
   <div class="not-found-container">
-    <text class="message">第二页</text>
+    <text class="message">404 Not Found!</text>
   </div>
 </template>
 

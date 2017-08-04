@@ -54,6 +54,8 @@
 </style>
 
 <script>
+  import * as types from '../store/mutation-types'
+  const env = weex.config.env || WXEnvironment
   module.exports = {
     props: {
       tabItems: { default: [] },
@@ -69,6 +71,15 @@
       tabitem: require('./tabitem.vue')
     },
     created: function () {
+      let STORE
+      if (env.platform.toLowerCase() === 'web') {
+        STORE = this.$store
+      } else {
+        STORE = global.store
+      }
+      STORE.commit(types.SET_HEADER_TITLE, {
+        title: this.tabItems[this.selectedIndex].title
+      })
       this.select(this.selectedIndex);
     },
     methods: {

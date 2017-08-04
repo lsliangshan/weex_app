@@ -2,7 +2,7 @@
   <div class="tabA">
     <!--<text @click="navigateTo('/pages/Login.js')">Home</text>-->
     <!--<app-header :data-state="state" data-title="新闻" :data-show-user-container="true"></app-header>-->
-    <scroller class="home-scroller" offset-accuracy="10" :style="{height: (state.platform == 'web' ? (state.device.height - 120 - 88) / state.device.dpr : (750 / state.device.width * state.device.height - 120 - 88)) + 'px'}">
+    <scroller class="home-scroller" offset-accuracy="10" @loadmore="loadMore" :style="{height: (state.platform == 'web' ? (state.device.height - 120 - 88) / state.device.dpr : (750 / state.device.width * state.device.height - 120 - 88)) + 'px'}">
       <!--<list class="joke-items">-->
       <refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
         <text class="indicator">刷新中 ...</text>

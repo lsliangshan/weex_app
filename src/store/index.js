@@ -92,6 +92,7 @@ const store = new Vuex.Store({
       dpr: env.platform.toLowerCase() === 'web' ? env.dpr : 1
     },
     appHeader: {
+      title: env.appName || '',
       theme: '#4fc08d',
       color: '#ffffff'
     },
@@ -127,7 +128,7 @@ const store = new Vuex.Store({
       },
       {
         index: 2,
-        title: '我的',
+        title: '我',
         titleColor: '#000000',
         icon: '',
         image: 'http://static.dei2.com/app/ti/m_unselect.png',

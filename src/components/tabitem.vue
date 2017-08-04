@@ -55,7 +55,8 @@
       onclickitem: function (e) {
         var params = {
           index: this.index,
-          src: this.src
+          src: this.src,
+          title: this.title
         };
         this.$emit('tabItemOnClick', params);
       }
