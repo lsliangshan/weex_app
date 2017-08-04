@@ -176,13 +176,6 @@
     },
     mounted () {
       this.loadPage(this.currentPage)
-
-      fetch({
-        url: 'http://10.2.1.161:3002/index/fetchTouTiao?min_behot_time=0',
-        callback: function (res) {
-          console.log('今日头条数据：', res)
-        }
-      })
     },
     components: {
 //      AppHeader
