@@ -103,7 +103,39 @@ const store = new Vuex.Store({
       title: '弹出窗口',
       shown: false
     },
-    history: []
+    history: [],
+    tabItems: [
+      {
+        index: 0,
+        title: '百思不得姐',
+        titleColor: '#000000',
+        icon: '',
+        image: 'http://static.dei2.com/app/ti/bdj_unselect.png',
+        selectedImage: 'http://static.dei2.com/app/ti/bdj_selected.png',
+        src: '/tabA',
+        visibility: 'visible',
+      },
+      {
+        index: 1,
+        title: '今日头条',
+        titleColor: '#000000',
+        icon: '',
+        image: 'http://static.dei2.com/app/ti/tt_unselect.png',
+        selectedImage: 'http://static.dei2.com/app/ti/tt_selected.png',
+        src: '/tabB',
+        visibility: 'hidden',
+      },
+      {
+        index: 2,
+        title: '我的',
+        titleColor: '#000000',
+        icon: '',
+        image: 'http://static.dei2.com/app/ti/m_unselect.png',
+        selectedImage: 'http://static.dei2.com/app/ti/m_selected.png',
+        src: '/tabC',
+        visibility: 'hidden',
+      }
+    ]
   }
 })
 

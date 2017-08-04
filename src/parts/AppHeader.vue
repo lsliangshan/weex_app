@@ -87,7 +87,7 @@
       },
       canGoBack () {
         if (this.$route) {
-          return !this.$route.fullPath.match(/^\/home/)
+          return !this.$route.fullPath.match(/^\/tab[A-Z]*/)
         } else {
           return this.dataCanGoBack
         }

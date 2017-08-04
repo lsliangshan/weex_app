@@ -1,8 +1,8 @@
 <template>
-  <div class="home">
+  <div class="tabA">
     <!--<text @click="navigateTo('/pages/Login.js')">Home</text>-->
     <!--<app-header :data-state="state" data-title="新闻" :data-show-user-container="true"></app-header>-->
-    <scroller class="home-scroller" offset-accuracy="10" @loadmore="loadMore" :style="{height: (state.platform == 'web' ? (state.device.height) / state.device.dpr : (750 / state.device.width * state.device.height)) + 'px'}">
+    <scroller class="home-scroller" offset-accuracy="10" :style="{height: (state.platform == 'web' ? (state.device.height - 120 - 88) / state.device.dpr : (750 / state.device.width * state.device.height - 120 - 88)) + 'px'}">
       <!--<list class="joke-items">-->
       <refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
         <text class="indicator">刷新中 ...</text>
@@ -20,7 +20,7 @@
       </div>
       <!--</list>-->
       <!--<loading class="loading" @loading="onloading" :display="showLoading">-->
-        <!--<text class="indicator">加载中 ...</text>-->
+      <!--<text class="indicator">加载中 ...</text>-->
       <!--</loading>-->
     </scroller>
 
@@ -28,14 +28,12 @@
 </template>
 
 <style scoped>
-  .home {
+  .tabA {
     width: 750px;
+    overflow: hidden;
     /*align-items: center;*/
     /*justify-content: center;*/
     /*background-color: #a986ff;*/
-  }
-  .header {
-
   }
   .joke-item {
     min-height: 150px;
@@ -96,16 +94,16 @@
 </style>
 
 <script>
-  import * as types from './store/mutation-types'
-  import { fetch } from './store/fetch'
-//  import STORE from './store'
+  import * as types from '../store/mutation-types'
+  import { fetch } from '../store/fetch'
+  //  import STORE from './store'
 
-//  import AppHeader from './parts/AppHeader.vue'
+  //  import AppHeader from './parts/AppHeader.vue'
 
-//  import Html from './components/html.bak.vue'
+  //  import Html from './components/html.bak.vue'
 
-//  const animation = weex.requireModule('animation')
-//  const dom = weex.requireModule('dom')
+  //  const animation = weex.requireModule('animation')
+  //  const dom = weex.requireModule('dom')
   var modal = weex.requireModule('modal')
   var navigator = weex.requireModule('navigator')
   const env = weex.config.env || WXEnvironment

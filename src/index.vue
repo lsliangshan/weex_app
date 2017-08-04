@@ -1,33 +1,49 @@
 <template>
-  <div class="wrapper">
-    <div @androidback="back">
-      <router-view style="flex: 1;" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(state.device.height)) + 'px'}"></router-view>
+  <div class="wrapper" :style="{height: (state.platform=='web'?((state.device.height - 120 - 88) / state.device.dpr):(750 / state.device.width * state.device.height)) + 'px'}">
+    <app-header :data-state="state" data-title="新闻" :data-show-user-container="true"></app-header>
+    <div @androidback="back" class="view-container" :style="{height: (state.platform=='web'?((state.device.height - 120 - 88) / state.device.dpr):(750 / state.device.width * state.device.height - 120 - 88)) + 'px'}">
+      <router-view style="flex: 1;"></router-view>
+    </div>
+    <div class="global-tabbar">
+      <tabbar :tabItems="state.tabItems" :selected-color="state.appHeader.theme" @tabBarOnClick="tabBarOnClick"></tabbar>
     </div>
   </div>
 </template>
 
 <style>
-  .nav {
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
   html, body {
     height: 100%;
     margin: 0;
     padding: 0;
     font-family: sans-serif;
   }
-  .wrapper { align-items: center; }
-  .title { padding-top:40px; padding-bottom: 40px; font-size: 48px; }
-  .logo { width: 360px; height: 156px; }
-  .desc { padding-top: 20px; color:#888; font-size: 24px;}
+  .wrapper {  }
+  .view-container {
+    /*position: absolute;*/
+    /*top: 120px;*/
+    /*width: 750px;*/
+    /*margin-top: 5px;*/
+    /*margin-top: 2px;*/
+    left: 0;
+  }
+  .global-tabbar {
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*bottom: 0;*/
+    /*margin-top: 5px;*/
+    /*width: 750px;*/
+    /*height: 88px;*/
+    background-color: lightgray;
+  }
 </style>
 
 <script>
+  import AppHeader from './parts/AppHeader.vue'
+  import Tabbar from './components/tabbar.vue'
 //  import STORE from './store'
   const env = weex.config.env || WXEnvironment
   const animation = weex.requireModule('animation')
+  const navigator = weex.requireModule('navigator')
   export default {
     data () {
       return {
@@ -43,9 +59,23 @@
     methods: {
       back: function () {
         this.$router.back()
+      },
+      tabTo (to) {
+        if (this.$router) {
+          this.$router.push(to)
+        } else {
+          let router = require('./router')
+          router.push(to)
+        }
+      },
+      tabBarOnClick (e) {
+        console.log('切换tab: ', e)
+        this.tabTo(e.src)
       }
     },
     components: {
+      AppHeader,
+      Tabbar
     }
   }
 </script>

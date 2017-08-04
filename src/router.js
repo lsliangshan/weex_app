@@ -39,6 +39,10 @@ import NotFound from './404.vue'
 import Login from './pages/Login.vue'
 import Profile from './pages/Profile.vue'
 
+import tabA from './tabs/tabA.vue'
+import tabB from './tabs/tabB.vue'
+import tabC from './tabs/tabC.vue'
+
 Vue.use(Router)
 
 const routes = [
@@ -55,8 +59,20 @@ const routes = [
     component: Login
   },
   {
+    path: '/tabA',
+    component: tabA
+  },
+  {
+    path: '/tabB',
+    component: tabB
+  },
+  {
+    path: '/tabC',
+    component: tabC
+  },
+  {
     path: '/',
-    redirect: '/home'
+    redirect: '/tabA'
   },
   {
     path: '*',
