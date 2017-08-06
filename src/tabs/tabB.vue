@@ -8,7 +8,8 @@
         <text class="indicator">刷新中 ...</text>
       </refresh>
       <div class="cell news-item" v-for="(item, index) in allNews">
-        <text>{{item.title}}</text>
+        <news-item :item="item" :type="item.hasOwnProperty('image_list') ? 1 : 0"></news-item>
+        <!--<text>{{item.title}}</text>-->
         <!--<text class="news-text" v-for="(c, idx) in item.content.split('<br>')">{{c.trim()}}</text>-->
         <!--<div class="user-info">-->
           <!--<text class="news-time">{{item.time}}</text>-->
@@ -91,6 +92,8 @@
   import { fetch } from '../store/fetch'
   //  import STORE from './store'
 
+  import NewsItem from '../parts/NewsItem.vue'
+
   //  import AppHeader from './parts/AppHeader.vue'
 
   //  import Html from './components/html.bak.vue'
@@ -166,6 +169,7 @@
       this.loadPage(this.nextTimeStamp)
     },
     components: {
+      NewsItem
 //      AppHeader
 //      ,
 //      Html
