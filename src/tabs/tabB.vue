@@ -7,7 +7,7 @@
       <refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
         <text class="indicator">刷新中 ...</text>
       </refresh>
-      <div class="cell news-item" v-for="(item, index) in allNews">
+      <div class="cell news-item" v-for="(item, index) in allNews" :key="item.group_id">
         <news-item :item="item" :type="item.hasOwnProperty('image_list') ? 1 : 0"></news-item>
         <!--<text>{{item.title}}</text>-->
         <!--<text class="news-text" v-for="(c, idx) in item.content.split('<br>')">{{c.trim()}}</text>-->
@@ -109,7 +109,8 @@
         refreshing: false,
         showLoading: false,
         nextTimeStamp: 0,
-        allNews: []
+        allNews: [],
+        groupIds: []
       }
     },
     computed: {
@@ -118,6 +119,16 @@
       }
     },
     methods: {
+      deDuplication (d) {
+        let data = JSON.parse(JSON.stringify(d))
+        for (let i = 0; i < data.length; i++) {
+          if (this.groupIds.indexOf(data[i].group_id) > -1) {
+            data.splice(i, 1)
+            i--
+          }
+        }
+        return data
+      },
       onrefresh (event) {
         const that = this
         this.refreshing = true
@@ -140,12 +151,13 @@
       loadPage (ts, callback) {
         const that = this
         fetch({
-          url: this.state.baseRequestUrl + 'fetchTouTiao?lt=' + ts,
+          url: this.state.baseRequestUrl + 'fetchTouTiao?min_behot_time=' + ts,
           callback: function (res) {
-            console.log('>>>>>>>', res)
+            console.log('>>>>>>>>.', res)
             if (Number(res.data.code) === 200) {
-              that.nextTimeStamp = res.data.data.next.max_behot_time
+              that.nextTimeStamp = res.data.data.data[0].behot_time
               that.allNews = res.data.data.data.concat(that.allNews)
+              console.log('....3333..', that.deDuplication(res.data.data.data))
             }
             callback && callback(res)
           }
@@ -154,10 +166,10 @@
       refreshPage (callback) {
         const that = this
         fetch({
-          url: this.state.baseRequestUrl + 'fetchTouTiao?lt=0',
+          url: this.state.baseRequestUrl + 'fetchTouTiao?min_behot_time=0',
           callback: function (res) {
             if (Number(res.data.code) === 200) {
-              that.nextTimeStamp = res.data.data.next.max_behot_time
+              that.nextTimeStamp = res.data.data.data[0].behot_time
               that.allNews = res.data.data.data.concat(that.allNews)
             }
             callback && callback(res)
