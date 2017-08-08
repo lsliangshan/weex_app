@@ -38,6 +38,7 @@ import Home from './Home.vue'
 import NotFound from './404.vue'
 import Login from './pages/Login.vue'
 import Profile from './pages/Profile.vue'
+import Web from './pages/Web.vue'
 
 import tabA from './tabs/tabA.vue'
 import tabB from './tabs/tabB.vue'
@@ -53,6 +54,10 @@ const routes = [
   {
     path: '/profile',
     component: Profile
+  },
+  {
+    path: '/web',
+    component: Web
   },
   {
     path: '/login',

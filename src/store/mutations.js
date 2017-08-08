@@ -114,5 +114,15 @@ export const mutations = {
   [types.SET_HEADER_TITLE] (state, data) {
     // 修改header中的title
     data.hasOwnProperty('title') && (state.appHeader.title = data.title)
+  },
+  [types.SET_PAGE_PARAMS] (state, data) {
+    try {
+      state.pageParams = JSON.parse(data)
+    } catch (err) {
+      state.pageParams = data
+    }
+  },
+  [types.DEL_PAGE_PARAMS] (state) {
+    state.pageParams = {}
   }
 }

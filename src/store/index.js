@@ -57,8 +57,8 @@ const store = new Vuex.Store({
   mutations: mutations.mutations,
   getters,
   state: {
-    baseRequestUrl: 'http://127.0.0.1:3002/index/',
-    // baseRequestUrl: 'http://talkapi.dei2.com/index/',
+    // baseRequestUrl: 'http://127.0.0.1:3002/index/',
+    baseRequestUrl: 'http://talkapi.dei2.com/index/',
     storageKey: {
       login: 'weexUserInfo'
     },
@@ -105,6 +105,7 @@ const store = new Vuex.Store({
       title: '弹出窗口',
       shown: false
     },
+    pageParams: {},
     history: [],
     tabItems: [
       {

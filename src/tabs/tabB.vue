@@ -7,7 +7,7 @@
       <refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
         <text class="indicator">刷新中 ...</text>
       </refresh>
-      <div class="cell news-item" v-for="(item, index) in allNews" :key="item.group_id">
+      <div class="cell news-item" v-for="(item, index) in allNews" :key="item.group_id" v-if="!item.hasOwnProperty('ugc_data') && item.tag_url != 'video'" @click="showTTDetail(item.source_url)">
         <news-item :item="item" :type="item.hasOwnProperty('image_list') ? 1 : 0"></news-item>
         <!--<text>{{item.title}}</text>-->
         <!--<text class="news-text" v-for="(c, idx) in item.content.split('<br>')">{{c.trim()}}</text>-->
@@ -93,6 +93,7 @@
   //  import STORE from './store'
 
   import NewsItem from '../parts/NewsItem.vue'
+  import ViewWeb from '../pages/Web.vue'
 
   //  import AppHeader from './parts/AppHeader.vue'
 
@@ -125,6 +126,8 @@
           if (this.groupIds.indexOf(data[i].group_id) > -1) {
             data.splice(i, 1)
             i--
+          } else {
+            this.groupIds.push(data[i].group_id)
           }
         }
         return data
@@ -156,8 +159,8 @@
             console.log('>>>>>>>>.', res)
             if (Number(res.data.code) === 200) {
               that.nextTimeStamp = res.data.data.data[0].behot_time
-              that.allNews = res.data.data.data.concat(that.allNews)
-              console.log('....3333..', that.deDuplication(res.data.data.data))
+              that.allNews = that.deDuplication(res.data.data.data).concat(that.allNews)
+//              that.allNews = res.data.data.data.concat(that.allNews)
             }
             callback && callback(res)
           }
@@ -175,13 +178,49 @@
             callback && callback(res)
           }
         })
+      },
+      formatParams (params) {
+        let out = []
+        for (let key in params) {
+          if (params.hasOwnProperty(key)) {
+            out.push(key + '=' + params[key])
+          }
+        }
+        return out.join('&')
+      },
+      showTTDetail (groupId) {
+        this.navigateTo('/pages/Web.js', {
+          d: encodeURIComponent('https://m.toutiao.com' + groupId)
+        })
+//        this.navigateTo('/pages/Web.js', 'd=' + encodeURIComponent('https://m.toutiao.com' + groupId))
+      },
+      navigateTo (to, params) {
+        if (this.state.platform.toLowerCase() === 'web') {
+          if (this.$router) {
+            this.$router.push(to.replace(/.*\/([a-zA-Z0-9_-]*)\.js$/,'$1').toLowerCase() + '?' + this.formatParams(params))
+          }
+        } else {
+          let STORE
+          if (env.platform.toLowerCase() === 'web') {
+            STORE = this.$store
+          } else {
+            STORE = global.store
+          }
+          STORE.commit(types.SET_PAGE_PARAMS, params)
+          navigator.push({
+            url: weex.config.bundleUrl.replace(/^(.*bundlejs).*$/, '$1') + to,
+            animated: "true"
+          }, event => {
+          })
+        }
       }
     },
     mounted () {
       this.loadPage(this.nextTimeStamp)
     },
     components: {
-      NewsItem
+      NewsItem,
+      ViewWeb
 //      AppHeader
 //      ,
 //      Html

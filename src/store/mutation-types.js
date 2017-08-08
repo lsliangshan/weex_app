@@ -46,3 +46,10 @@ export const NAVIGATE_BACK = 'NAVIGATE_BACK'
 export const NAVIGATE_TO = 'NAVIGATE_TO'
 
 export const SET_HEADER_TITLE = 'SET_HEADER_TITLE'
+
+/***
+ * weex实例间传递的参数 store.pageParams
+ * 设置、删除
+ */
+export const SET_PAGE_PARAMS = 'SET_PAGE_PARAMS'
+export const DEL_PAGE_PARAMS = 'DEL_PAGE_PARAMS'
