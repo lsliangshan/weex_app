@@ -43,6 +43,7 @@ import Web from './pages/Web.vue'
 import tabA from './tabs/tabA.vue'
 import tabB from './tabs/tabB.vue'
 import tabC from './tabs/tabC.vue'
+import tabD from './tabs/tabD.vue'
 
 Vue.use(Router)
 
@@ -74,6 +75,10 @@ const routes = [
   {
     path: '/tabC',
     component: tabC
+  },
+  {
+    path: '/tabD',
+    component: tabD
   },
   {
     path: '/',

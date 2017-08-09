@@ -1,0 +1,34 @@
+{
+    "nat-geolocation": {
+        "source": {
+            "type": "registry",
+            "id": "nat-geolocation"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "nat-device-info": {
+        "source": {
+            "type": "registry",
+            "id": "nat-device-info"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "weex-amap": {
+        "source": {
+            "type": "registry",
+            "id": "weex-amap"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "weex-adapter-image": {
+        "source": {
+            "type": "registry",
+            "id": "weex-adapter-image"
+        },
+        "is_top_level": false,
+        "variables": {}
+    }
+}

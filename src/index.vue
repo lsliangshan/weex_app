@@ -5,8 +5,15 @@
       <router-view style="flex: 1;"></router-view>
     </div>
     <div class="global-tabbar">
-      <tabbar :tabItems="state.tabItems" :selected-color="state.appHeader.theme" @tabBarOnClick="tabBarOnClick"></tabbar>
+      <tabbar :tabItems="state.tabItems" :unselected-color="'#aaaaaa'" :selected-color="state.appHeader.theme" @tabBarOnClick="tabBarOnClick"></tabbar>
     </div>
+    <transition name="popup-transition"
+                @before-enter="beforeEnter"
+                @enter="enter"
+                :css="false"
+    >
+      <popup ref="globalPopup" v-if="state.popup.shown"></popup>
+    </transition>
   </div>
 </template>
 
@@ -40,6 +47,7 @@
 <script>
   import AppHeader from './parts/AppHeader.vue'
   import Tabbar from './components/tabbar.vue'
+  import Popup from './components/Popup.vue'
   import * as types from './store/mutation-types'
 //  import STORE from './store'
   const env = weex.config.env || WXEnvironment
@@ -69,6 +77,41 @@
           router.push(to)
         }
       },
+      beforeEnter (el) {
+        if (this.state && this.state.platform === 'web') {
+          el.style.position = 'fixed'
+          el.style.transform = 'translate(0, 3000px)'
+          el.style.transformOrigin = 'center top'
+          el.style.transition = 'all .8s cubic-bezier(0.215, 0.610, 0.355, 1.000)'
+        }
+      },
+      enter (el, done) {
+        if (this.state && this.state.platform === 'web') {
+          el.style.transform = 'translate(0, 0)'
+          done()
+        } else {
+          animation.transition(el, {
+            styles: {
+              transform: 'translate(0, 3000px)',
+              transformOrigin: 'center top'
+            },
+            duration: 1,
+            timingFunction: 'linear',
+            delay: 0
+          }, function () {
+            console.log('entered333333:', el)
+            animation.transition(el, {
+              styles: {
+                transform: 'translate(0, 0)',
+                transformOrigin: 'center top'
+              },
+              duration: 600,
+              timingFunction: 'cubic-bezier(0.215, 0.610, 0.355, 1.000)',
+              delay: 0
+            }, done)
+          })
+        }
+      },
       tabBarOnClick (e) {
         let STORE
         if (env.platform.toLowerCase() === 'web') {
@@ -84,7 +127,8 @@
     },
     components: {
       AppHeader,
-      Tabbar
+      Tabbar,
+      Popup
     }
   }
 </script>

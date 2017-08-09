@@ -62,6 +62,13 @@ const store = new Vuex.Store({
     storageKey: {
       login: 'weexUserInfo'
     },
+    geolocation: {
+      shown: true,  // 是否显示定位
+      finished: true,    // 定位是否完成
+      lat: 39.991579,
+      lng: 116.46798089999999
+    },
+    showLocation: true,  // 是否显示定位
     isLogin: false, // 是否为登录状态
     userInfo: {},   // 登录用户信息
     banner: {
@@ -111,7 +118,7 @@ const store = new Vuex.Store({
       {
         index: 0,
         title: '百思不得姐',
-        titleColor: '#000000',
+        titleColor: '#aaaaaa',
         icon: '',
         image: 'http://static.dei2.com/app/ti/bdj_unselect.png',
         selectedImage: 'http://static.dei2.com/app/ti/bdj_selected.png',
@@ -121,7 +128,7 @@ const store = new Vuex.Store({
       {
         index: 1,
         title: '今日头条',
-        titleColor: '#000000',
+        titleColor: '#ff0000',
         icon: '',
         image: 'http://static.dei2.com/app/ti/tt_unselect.png',
         selectedImage: 'http://static.dei2.com/app/ti/tt_selected.png',
@@ -130,15 +137,86 @@ const store = new Vuex.Store({
       },
       {
         index: 2,
+        title: '找工作',
+        titleColor: '#aaaaaa',
+        icon: '',
+        image: 'http://static.dei2.com/app/ti/job_unselect.png',
+        selectedImage: 'http://static.dei2.com/app/ti/job_selected.png',
+        src: '/tabC',
+        visibility: 'hidden'
+      },
+      {
+        index: 3,
         title: '我',
-        titleColor: '#000000',
+        titleColor: '#aaaaaa',
         icon: '',
         image: 'http://static.dei2.com/app/ti/m_unselect.png',
         selectedImage: 'http://static.dei2.com/app/ti/m_selected.png',
-        src: '/tabC',
+        src: '/tabD',
         visibility: 'hidden',
       }
-    ]
+    ],
+    job: {
+      encryptInfo: {
+        c: 'wxxiaochengxu',
+        k: '135486906272855',
+        s: '5D80A834519X4F44ADCC7F1D5X90B269',
+        d: 'AF377B8B-3550-5433-86F0-D5F4F95FFF2E',
+        v: '1.0',
+        // payPoint: 'b7ccb3b53abe46988df5a639fba980e4',       // QA
+        // payPoint: 'f21c4f14fc974494bec822fb46fd1a6e',           // 线上一分钱
+        payPoint: '34a95223a071419da275719ea2a55daf',        // 线上
+        appPlat: 12,
+        payType: 12
+      },
+      baseUrl: 'https://mi.zhaopin.com',
+      requestUrl: {
+        resume: {
+          create: '/WechatSmall/Resume/Create',             // 创建简历
+          integrity: '/WechatSmall/Resume/Integrity',           // 获取简历完整度
+          refresh: '/WechatSmall/Resume/Refresh',             // 简历一键刷新
+          modifyName: '/WechatSmall/Resume/ModifyName',         // 更新简历名称
+          updateUserInfo: '/WechatSmall/My/UpdateUserInfo',        // 更新用户的基本信息
+          operate: '/WechatSmall/Resume/Operate',                 // 设置简历，0-刷新简历，1-设置默认，4-公开个人简历，5-委托智联，6-保密个人简历，8-取消默认
+          getJobTarget: '/WechatSmall/Resume/JobTarget',            // 获取某份简历的求职意向
+          saveJobTarget: '/WechatSmall/Resume/SaveJobTarget',    // 保存某份简历的求职意向
+          getEducationExperiences: '/WechatSmall/Resume/EducationExperiences',   // 获取某份简历的教育经历
+          saveEducationExperience: '/WechatSmall/Resume/SaveEducationExperience',   // 保存教育经历
+          getWorkExperiences: '/WechatSmall/Resume/WorkExperiences',             // 获取某份简历的工作经历
+          saveWorkExperience: '/WechatSmall/Resume/SaveWorkExperience',             // 保存某份简历的工作经历
+          getProjectExperiences: '/WechatSmall/Resume/GetProjectExperiences',        // 获取项目经验
+          saveProjectExperience: '/WechatSmall/Resume/SaveProjectExperience',       // 保存项目经验
+          getSelfEvaluation: '/WechatSmall/Resume/SelfEvaluation',                   // 获取自我评价
+          saveSelfEvaluation: '/WechatSmall/Resume/SaveSelfEvaluation',               // 保存自我评价
+          deleteResumeInfo: '/WechatSmall/Resume/DeleteResumeInfo'                   // 删除教育背景或工作经验或项目经验。resumeOperate: 	0-删除工作经验，1-删除教育背景, 2是删除项目经验
+        },
+        position: {
+          jobList: '/WechatSmall/my/Recommend', // 未登录状态下，职位列表接口
+          getSimilarPositions: '/WechatSmall/Position/SimilarPositions',      // 获取相似职位
+          operate: '/WechatSmall/Position/Operate',           // 职位申请
+          search: '/WechatSmall/Position/Search',             // 职位搜索
+          jobDetail: '/WechatSmall/Position/Detail'    // 职位详情列表
+        },
+        my: {
+          getUserDetail: '/WechatSmall/My/GetUserDetail',      // 获取我的个人信息
+          getVerification: '/WechatSmall/My/GetMobileVerification',  // 获取手机验证码
+          checkVerification: '/WechatSmall/My/CheckMobileVerification',  // 检验手机验证码
+          getCode: '/WechatSmall/My/ForgetPwdGetCode',       // 忘记密码页，获取短信验证码
+          checkCode: '/WechatSmall/My/ForgetPwdCheckCode',   // 忘记密码页，检验短信验证码
+          checkUsername: '/WechatSmall/My/CheckRegisterNameExist',           // 检测手机号、邮箱是否被注册过
+          login: '/WechatSmall/My/Login',    // 登录接口
+          logout: '/WechatSmall/My/logout',       // 账号退出
+          register: '/WechatSmall/My/Register',      // 账号注册
+          forgetPwd: '/WechatSmall/My/ForgetPwd',     // 忘记密码页，修改密码
+          bindMobile: '/WechatSmall/My/MobileBinding',   // 绑定手机号
+          getMobileBindingVerification: '/WechatSmall/My/GetMobileBindingVerification'    // 获取手机绑定验证码
+        },
+        more: {
+          searchByKeyword: '/WechatSmall/more/SearchByKeyword',  // 热词联想
+          loginLog: '/WechatSmall/more/LoginLog'                // 启动用户log 6.43
+        }
+      }
+    }
   }
 })
 

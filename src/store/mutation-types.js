@@ -53,3 +53,12 @@ export const SET_HEADER_TITLE = 'SET_HEADER_TITLE'
  */
 export const SET_PAGE_PARAMS = 'SET_PAGE_PARAMS'
 export const DEL_PAGE_PARAMS = 'DEL_PAGE_PARAMS'
+
+/**
+ * Geolocation 定位相关
+ */
+export const SHOW_LOCATION = 'SHOW_LOCATION'
+export const HIDE_LOCATION = 'HIDE_LOCATION'
+export const START_LOCATION = 'START_LOCATION'
+export const STOP_LOCATION = 'STOP_LOCATION'
+export const SET_LOCATION = 'SET_LOCATION'

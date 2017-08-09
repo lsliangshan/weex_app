@@ -59,7 +59,7 @@
   module.exports = {
     props: {
       tabItems: { default: [] },
-      selectedColor: { default: '#ff0000' },
+      selectedColor: { default: '#000000' },
       unselectedColor: { default: '#000000' }
     },
     data: function () {

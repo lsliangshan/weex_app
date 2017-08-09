@@ -4,6 +4,11 @@
     <div class="nav-back-container" v-if="canGoBack" @click="back">
       <image class="nav-back" src="http://static.dei2.com/imgs/icon-back.png" resize="cover"></image>
     </div>
+    <div class="geolocation-container" v-else-if="dataShowLocation || state.geolocation.shown" @click="showPopup">
+      <text class="location-text">全国</text>
+      <image class="arrow-down" src="http://static.dei2.com/app/arrow_down.png" v-if="state.geolocation.finished" resize="cover"></image>
+      <image class="arrow-down" src="http://static.dei2.com/app/loading.gif" v-if="!state.geolocation.finished" resize="cover"></image>
+    </div>
     <div class="user-container" v-if="dataShowUserContainer">
       <div class="has-login" v-if="state.isLogin" @click="navigateTo('/pages/Profile.js')">
         <image :src="state.userInfo.icon" class="user-icon" resize="cover"></image>
@@ -41,6 +46,25 @@
     height: 48px;
     pointer-events: none;
   }
+  .geolocation-container {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 80px;
+    padding-left: 30px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .location-text {
+    color: #ffffff;
+    font-size: 28px;
+  }
+  .arrow-down {
+    width: 32px;
+    height: 32px;
+    margin-left: 10px;
+  }
   .user-container {
     position: absolute;
     right: 0;
@@ -72,13 +96,17 @@
 
 <script>
 //  import STORE from '../store'
+//  import amap from 'vue-amap'
+  import * as types from '../store/mutation-types'
   const env = weex.config.env || WXEnvironment
-  const navigator = weex.requireModule('navigator')
+  const weexNavigator = weex.requireModule('navigator')
+
   export default {
-    props: ['dataState', 'dataTitle', 'dataCanGoBack', 'dataShowUserContainer'],
+    props: ['dataState', 'dataTitle', 'dataCanGoBack', 'dataShowUserContainer', 'dataShowLocation'],
     data () {
       return {
 //        state: this.dataState || this.$store.state
+        pos: [116.487, 40.00003]
       }
     },
     computed: {
@@ -91,19 +119,27 @@
         } else {
           return this.dataCanGoBack
         }
+      },
+      STORE () {
+        let _store
+        if (env.platform.toLowerCase() === 'web') {
+          _store = this.$store
+        } else {
+          _store = global.store
+        }
+        return _store
       }
     },
-//    created () {
-//      console.log('In AppHeader: ', this.$store.state)
-//      this.state = this.dataState || this.$store.state
-//    },
+    mounted () {
+      this.location()
+    },
     methods: {
       back () {
         if (this.$router) {
           this.$router.back()
         } else {
           if (this.state.platform.toLowerCase() !== 'web') {
-            navigator.pop({
+            weexNavigator.pop({
               animated: "true"
             }, event => {
             })
@@ -116,12 +152,47 @@
             this.$router.push(to.replace(/.*\/([a-zA-Z0-9_-]*)\.js$/,'$1').toLowerCase())
           }
         } else {
-          navigator.push({
+          weexNavigator.push({
             url: weex.config.bundleUrl.replace(/^(.*bundlejs).*$/, '$1') + to,
             animated: "true"
           }, event => {
           })
         }
+      },
+      location () {
+        const that = this
+        // 定位
+        this.STORE.commit(types.START_LOCATION)
+
+        if (env.platform.toLowerCase() === 'web') {
+          let geolocation = new BMap.Geolocation()
+          geolocation.getCurrentPosition(function (r) {
+            console.log('................', r.point.lat, r.point.lng)
+            setTimeout(function () {
+              that.STORE.commit(types.STOP_LOCATION)
+            }, 1000)
+          })
+        }
+      },
+      showPopup () {
+//        let STORE
+//        if (env.platform.toLowerCase() === 'web') {
+//          STORE = this.$store
+//        } else {
+//          STORE = global.store
+//        }
+        this.STORE.commit(types.SHOW_POPUP, {
+          title: '测试弹出'
+        })
+      },
+      hidePopup () {
+//        let STORE
+//        if (env.platform.toLowerCase() === 'web') {
+//          STORE = this.$store
+//        } else {
+//          STORE = global.store
+//        }
+        this.STORE.commit(types.HIDE_POPUP)
       }
     }
   }

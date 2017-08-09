@@ -124,5 +124,20 @@ export const mutations = {
   },
   [types.DEL_PAGE_PARAMS] (state) {
     state.pageParams = {}
+  },
+  [types.SHOW_LOCATION] (state) {
+    state.geolocation.shown = true
+  },
+  [types.HIDE_LOCATION] (state) {
+    state.geolocation.shown = false
+  },
+  [types.START_LOCATION] (state) {
+    state.geolocation.finished = false
+  },
+  [types.STOP_LOCATION] (state) {
+    state.geolocation.finished = true
+  },
+  [types.SET_LOCATION] (state, data) {
+    state.geolocation = Object.assign({}, state.geolocation, data)
   }
 }

@@ -13,8 +13,8 @@
       <div class="top">
         <text class="item-title">{{item.title}}</text>
       </div>
-      <div class="middle">
-        <image class="middle-image" v-for="(item, index) in item.image_list.slice(0, 3)" :src="item.url" resize="cover"></image>
+      <div class="middle" v-if="item.image_list && item.image_list.length > 0">
+        <image class="middle-image" v-for="(item, index) in item.image_list" v-if="index < 3" :src="item.url" resize="cover"></image>
       </div>
       <div class="bottom">
         <text class="item-subtitle">{{item.source}}</text>
