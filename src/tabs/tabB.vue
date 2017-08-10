@@ -117,6 +117,15 @@
     computed: {
       state () {
         return (env.platform.toLowerCase() === 'web' ? this.$store.state : global.store._vm._data.$$state)
+      },
+      STORE () {
+        let _store
+        if (env.platform.toLowerCase() === 'web') {
+          _store = this.$store
+        } else {
+          _store = global.store
+        }
+        return _store
       }
     },
     methods: {
@@ -200,13 +209,13 @@
             this.$router.push(to.replace(/.*\/([a-zA-Z0-9_-]*)\.js$/,'$1').toLowerCase() + '?' + this.formatParams(params))
           }
         } else {
-          let STORE
-          if (env.platform.toLowerCase() === 'web') {
-            STORE = this.$store
-          } else {
-            STORE = global.store
-          }
-          STORE.commit(types.SET_PAGE_PARAMS, params)
+//          let STORE
+//          if (env.platform.toLowerCase() === 'web') {
+//            STORE = this.$store
+//          } else {
+//            STORE = global.store
+//          }
+          this.STORE.commit(types.SET_PAGE_PARAMS, params)
           navigator.push({
             url: weex.config.bundleUrl.replace(/^(.*bundlejs).*$/, '$1') + to,
             animated: "true"

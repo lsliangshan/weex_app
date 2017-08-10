@@ -221,7 +221,8 @@
 //          STORE = global.store
 //        }
         this.STORE.commit(types.SHOW_POPUP, {
-          title: '测试弹出'
+          title: '选择城市',
+          type: 1
         })
       },
       hidePopup () {

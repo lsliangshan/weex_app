@@ -1,5 +1,5 @@
 <template>
-  <div class="popup-container" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" ref="popupContainer" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(state.device.height*2)) + 'px'}">
+  <div class="popup-container" ref="popupContainer" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(state.device.height*2)) + 'px'}">
     <!--<div class="popup-mask" :style="{height: (state.device.height / state.device.dpr) + 'px'}"></div>-->
     <!--<transition name="popup-transition"-->
                 <!--@before-enter="beforeEnter"-->
@@ -10,16 +10,17 @@
     <!--&gt;-->
 
     <!--</transition>-->
-    <div class="popup-content" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr - 20):(state.device.height * 2 - 40)) + 'px'}">
-      <div class="popup-header-container">
-        <text class="popup-title">弹出窗口</text>
+    <div class="popup-content" :style="{height: (state.platform == 'web' ? (state.device.height - 20) / state.device.dpr : (750 / state.device.width * state.device.height - 20)) + 'px'}">
+    <!--<div class="popup-content" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr - 20):(state.device.height * 2 - 40)) + 'px'}">-->
+      <div class="popup-header-container" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
+        <text class="popup-title">{{state.popup.title}}</text>
         <div class="popup-close-container" @click="hidePopup">
           <image class="popup-close" src="http://static.dei2.com/imgs/icon-close.png" resize="cover"></image>
           <!--<text class="popup-close">×</text>-->
         </div>
       </div>
-      <div class="popup-body-container">
-        <slot></slot>
+      <div class="popup-body-container" :style="{height: (state.platform == 'web' ? (state.device.height - 20 - 96) / state.device.dpr : (750 / state.device.width * state.device.height - 20 - 96)) + 'px'}">
+        <city-selector v-if="state.popup.type == 1"></city-selector>
       </div>
     </div>
   </div>
@@ -64,6 +65,11 @@
     font-size: 32px;
     border-bottom: 1px solid #ccc;
   }
+  .popup-body-container {
+    width: 750px;
+    /*background-color: #f5f5f5;*/
+    overflow: hidden;
+  }
   .popup-close-container {
     position: absolute;
     width: 96px;
@@ -84,9 +90,11 @@
 </style>
 
 <script>
-  import STORE from '../store/index.js'
+//  import STORE from '../store/index.js'
   import * as types from '../store/mutation-types'
+  import CitySelector from '../pages/CitySelector.vue'
   const animation = weex.requireModule('animation')
+  const env = weex.config.env || WXEnvironment
   //  const modal = weex.requireModule('modal')
   export default {
     data () {
@@ -103,7 +111,16 @@
     },
     computed: {
       state () {
-        return STORE.state
+        return (env.platform.toLowerCase() === 'web' ? this.$store.state : global.store._vm._data.$$state)
+      },
+      STORE () {
+        let _store
+        if (env.platform.toLowerCase() === 'web') {
+          _store = this.$store
+        } else {
+          _store = global.store
+        }
+        return _store
       }
     },
     mounted () {
@@ -198,6 +215,7 @@
         })
       },
       hidePopup () {
+        const that = this
         animation.transition(this.$refs.popupContainer, {
           styles: {
             transform: 'translate(0, 3000px)',
@@ -207,11 +225,12 @@
           timingFunction: 'cubic-bezier(0.215, 0.610, 0.355, 1.000)',
           delay: 100
         }, function () {
-          STORE.commit(types.HIDE_POPUP)
+          that.STORE.commit(types.HIDE_POPUP)
         })
       }
     },
     components: {
+      CitySelector
     }
   }
 </script>

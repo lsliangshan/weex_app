@@ -60,7 +60,8 @@ const store = new Vuex.Store({
     // baseRequestUrl: 'http://127.0.0.1:3002/index/',
     baseRequestUrl: 'http://talkapi.dei2.com/index/',
     storageKey: {
-      login: 'weexUserInfo'
+      login: 'weexUserInfo',
+      city: 'weexCity'
     },
     geolocation: {
       shown: true,  // 是否显示定位
@@ -97,7 +98,7 @@ const store = new Vuex.Store({
       model: env.deviceModel || '',
       width: env.deviceWidth || 750,
       height: env.deviceHeight || 1334,
-      dpr: env.platform.toLowerCase() === 'web' ? env.dpr : 1
+      dpr: env.platform.toLowerCase() === 'web' ? env.dpr : env.scale
     },
     appHeader: {
       title: env.appName || '',
@@ -110,6 +111,7 @@ const store = new Vuex.Store({
     },
     popup: {
       title: '弹出窗口',
+      type: 0,    // 1: 定位
       shown: false
     },
     pageParams: {},

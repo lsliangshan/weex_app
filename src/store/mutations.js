@@ -50,6 +50,7 @@ export const mutations = {
   },
   [types.HIDE_POPUP] (state) {
     state.popup.shown = false
+    state.popup.type = 0
   },
   [types.INIT_LOGIN_INFO] (state, data) {
     state.isLogin = true

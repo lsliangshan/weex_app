@@ -176,6 +176,15 @@
     computed: {
       state () {
         return (env.platform.toLowerCase() === 'web' ? this.$store.state : global.store._vm._data.$$state)
+      },
+      STORE () {
+        let _store
+        if (env.platform.toLowerCase() === 'web') {
+          _store = this.$store
+        } else {
+          _store = global.store
+        }
+        return _store
       }
     },
     methods: {
@@ -312,13 +321,13 @@
                   duration: 0.8
                 })
 
-                let STORE
-                if (env.platform.toLowerCase() === 'web') {
-                  STORE = that.$store
-                } else {
-                  STORE = global.store
-                }
-                STORE.commit(types.LOGIN, {
+//                let STORE
+//                if (env.platform.toLowerCase() === 'web') {
+//                  STORE = that.$store
+//                } else {
+//                  STORE = global.store
+//                }
+                that.STORE.commit(types.LOGIN, {
                   userInfo: res.data.data
                 })
               } else {

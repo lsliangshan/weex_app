@@ -12,7 +12,8 @@
                 @enter="enter"
                 :css="false"
     >
-      <popup ref="globalPopup" v-if="state.popup.shown"></popup>
+      <popup ref="globalPopup" v-if="state.popup.shown">
+      </popup>
     </transition>
   </div>
 </template>

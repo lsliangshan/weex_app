@@ -91,7 +91,6 @@
           timingFunction: 'ease-in-out',
           delay: 0
         }, function () {
-          console.log('>>>>>>>>page start', event)
         })
 //        modal.toast({ message: 'pagestart' })
       },
@@ -107,7 +106,6 @@
             delay: 0
           }, function () {
             that.showInitLoading = false
-            console.log('>>>>>>>>page finish', event)
           })
         }, 1000)
 

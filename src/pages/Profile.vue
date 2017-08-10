@@ -100,18 +100,27 @@
     computed: {
       state () {
         return (env.platform.toLowerCase() === 'web' ? this.$store.state : global.store._vm._data.$$state)
+      },
+      STORE () {
+        let _store
+        if (env.platform.toLowerCase() === 'web') {
+          _store = this.$store
+        } else {
+          _store = global.store
+        }
+        return _store
       }
     },
     methods: {
       logout () {
-        let STORE
-        if (env.platform.toLowerCase() === 'web') {
-          STORE = this.$store
-        } else {
-          STORE = global.store
-        }
-        STORE.commit(types.LOGOUT)
-        STORE.commit(types.NAVIGATE_BACK)
+//        let STORE
+//        if (env.platform.toLowerCase() === 'web') {
+//          STORE = this.$store
+//        } else {
+//          STORE = global.store
+//        }
+        this.STORE.commit(types.LOGOUT)
+        this.STORE.commit(types.NAVIGATE_BACK)
       }
     },
     components: {
