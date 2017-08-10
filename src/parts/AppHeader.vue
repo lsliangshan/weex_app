@@ -5,7 +5,7 @@
       <image class="nav-back" src="http://static.dei2.com/imgs/icon-back.png" resize="cover"></image>
     </div>
     <div class="geolocation-container" v-else-if="dataShowLocation || state.geolocation.shown" @click="showPopup">
-      <text class="location-text">全国</text>
+      <text class="location-text">{{state.geolocation.city || '全国'}}</text>
       <image class="arrow-down" src="http://static.dei2.com/app/arrow_down.png" v-if="state.geolocation.finished" resize="cover"></image>
       <image class="arrow-down" src="http://static.dei2.com/app/loading.gif" v-if="!state.geolocation.finished" resize="cover"></image>
     </div>
@@ -98,6 +98,7 @@
 //  import STORE from '../store'
 //  import amap from 'vue-amap'
   import * as types from '../store/mutation-types'
+  import { fetch } from '../store/fetch'
   const env = weex.config.env || WXEnvironment
   const weexNavigator = weex.requireModule('navigator')
 
@@ -159,6 +160,14 @@
           })
         }
       },
+      getLocationCity (opts) {
+        fetch({
+          url: 'http://talkapi.dei2.com/index/getCityInfoByLatLng?lat=' + opts.lat + '&lng=' + opts.lng,
+          callback: function (res) {
+            opts.callback && opts.callback(res)
+          }
+        })
+      },
       location () {
         const that = this
         // 定位
@@ -167,10 +176,40 @@
         if (env.platform.toLowerCase() === 'web') {
           let geolocation = new BMap.Geolocation()
           geolocation.getCurrentPosition(function (r) {
-            console.log('................', r.point.lat, r.point.lng)
-            setTimeout(function () {
-              that.STORE.commit(types.STOP_LOCATION)
-            }, 1000)
+            that.getLocationCity({
+              lat: r.point.lat,
+              lng: r.point.lng,
+              callback: function (res) {
+                let _data = JSON.parse(res.data.data)
+                if (Number(_data.StatusCode) === 200) {
+                  that.STORE.commit(types.SET_LOCATION, {
+                    finished: true,
+                    lat: r.point.lat,
+                    lng: r.point.lng,
+                    city: _data.cityname
+                  })
+                }
+              }
+            })
+          })
+        } else {
+          const Nat = require('natjs')
+          Nat.geolocation.get((err, ret) => {
+            that.getLocationCity({
+              lat: ret.latitude,
+              lng: ret.longitude,
+              callback: function (res) {
+                let _data = JSON.parse(res.data.data)
+                if (Number(_data.StatusCode) === 200) {
+                  that.STORE.commit(types.SET_LOCATION, {
+                    finished: true,
+                    lat: ret.latitude,
+                    lng: ret.longitude,
+                    city: _data.cityname
+                  })
+                }
+              }
+            })
           })
         }
       },

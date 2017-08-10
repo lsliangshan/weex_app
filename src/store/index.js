@@ -65,10 +65,10 @@ const store = new Vuex.Store({
     geolocation: {
       shown: true,  // 是否显示定位
       finished: true,    // 定位是否完成
+      city: '',     // 定位城市名称
       lat: 39.991579,
       lng: 116.46798089999999
     },
-    showLocation: true,  // 是否显示定位
     isLogin: false, // 是否为登录状态
     userInfo: {},   // 登录用户信息
     banner: {
