@@ -63,6 +63,16 @@ const store = new Vuex.Store({
       login: 'weexUserInfo',
       city: 'weexCity'
     },
+    startPage: {    // 启动屏幕
+      shown: true,
+      resources: [
+        'http://static.dei2.com/app/full/01.jpg',
+        'http://static.dei2.com/app/full/02.jpg',
+        'http://static.dei2.com/app/full/03.jpg',
+        'http://static.dei2.com/app/full/04.jpg',
+        'http://static.dei2.com/app/full/05.jpg'
+      ]
+    },
     geolocation: {
       shown: true,  // 是否显示定位
       finished: true,    // 定位是否完成
