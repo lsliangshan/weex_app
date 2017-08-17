@@ -57,8 +57,8 @@ const store = new Vuex.Store({
   mutations: mutations.mutations,
   getters,
   state: {
-    // baseRequestUrl: 'http://127.0.0.1:3002/index/',
-    baseRequestUrl: 'http://talkapi.dei2.com/index/',
+    // baseRequestUrl: 'https://127.0.0.1:3002/index/',
+    baseRequestUrl: 'https://talkapi.dei2.com/index/',
     storageKey: {
       login: 'weexUserInfo',
       city: 'weexCity'
@@ -66,11 +66,11 @@ const store = new Vuex.Store({
     startPage: {    // 启动屏幕
       shown: true,
       resources: [
-        'http://static.dei2.com/app/full/01.jpg',
-        'http://static.dei2.com/app/full/02.jpg',
-        'http://static.dei2.com/app/full/03.jpg',
-        'http://static.dei2.com/app/full/04.jpg',
-        'http://static.dei2.com/app/full/05.jpg'
+        'https://static.dei2.com/app/full/01.jpg',
+        'https://static.dei2.com/app/full/02.jpg',
+        'https://static.dei2.com/app/full/03.jpg',
+        'https://static.dei2.com/app/full/04.jpg',
+        'https://static.dei2.com/app/full/05.jpg'
       ]
     },
     geolocation: {
@@ -132,8 +132,8 @@ const store = new Vuex.Store({
         title: '百思不得姐',
         titleColor: '#aaaaaa',
         icon: '',
-        image: 'http://static.dei2.com/app/ti/bdj_unselect.png',
-        selectedImage: 'http://static.dei2.com/app/ti/bdj_selected.png',
+        image: 'https://static.dei2.com/app/ti/bdj_unselect.png',
+        selectedImage: 'https://static.dei2.com/app/ti/bdj_selected.png',
         src: '/tabA',
         visibility: 'visible',
       },
@@ -142,8 +142,8 @@ const store = new Vuex.Store({
         title: '今日头条',
         titleColor: '#ff0000',
         icon: '',
-        image: 'http://static.dei2.com/app/ti/tt_unselect.png',
-        selectedImage: 'http://static.dei2.com/app/ti/tt_selected.png',
+        image: 'https://static.dei2.com/app/ti/tt_unselect.png',
+        selectedImage: 'https://static.dei2.com/app/ti/tt_selected.png',
         src: '/tabB',
         visibility: 'hidden',
       },
@@ -152,8 +152,8 @@ const store = new Vuex.Store({
         title: '找工作',
         titleColor: '#aaaaaa',
         icon: '',
-        image: 'http://static.dei2.com/app/ti/job_unselect.png',
-        selectedImage: 'http://static.dei2.com/app/ti/job_selected.png',
+        image: 'https://static.dei2.com/app/ti/job_unselect.png',
+        selectedImage: 'https://static.dei2.com/app/ti/job_selected.png',
         src: '/tabC',
         visibility: 'hidden'
       },
@@ -162,8 +162,8 @@ const store = new Vuex.Store({
         title: '我',
         titleColor: '#aaaaaa',
         icon: '',
-        image: 'http://static.dei2.com/app/ti/m_unselect.png',
-        selectedImage: 'http://static.dei2.com/app/ti/m_selected.png',
+        image: 'https://static.dei2.com/app/ti/m_unselect.png',
+        selectedImage: 'https://static.dei2.com/app/ti/m_selected.png',
         src: '/tabD',
         visibility: 'hidden',
       }

@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <image class="bg-image" src="http://static.dei2.com/app/bg.jpg" ref="bgImage" @load="imageLoaded" resize="cover" :class="state.platform=='web'?'shown':''" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(750 / state.device.width * state.device.height)) + 'px'}"></image>
+    <image class="bg-image" src="https://static.dei2.com/app/bg.jpg" ref="bgImage" @load="imageLoaded" resize="cover" :class="state.platform=='web'?'shown':''" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(750 / state.device.width * state.device.height)) + 'px'}"></image>
     <div class="login-content" :style="{height: (state.platform=='web'?(state.device.height / state.device.dpr):(750 / state.device.width * state.device.height)) + 'px'}">
       <div class="poetry-container" ref="poetryContainer">
         <div class="poetry-item-container" ref="poetryItem" v-for="(item, index) in poetry.split(';').reverse()" :key="item">

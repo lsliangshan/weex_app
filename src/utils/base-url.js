@@ -35,7 +35,7 @@ exports.getBaseURL = function (vm) {
     if (matches && matches.length >= 2) {
       host = matches[1];
     }
-    nativeBase = 'http://' + host + '/' + vm.dir + '/build/';
+    nativeBase = 'https://' + host + '/' + vm.dir + '/build/';
   }
   var h5Base = './vue.html?page=./' + vm.dir + '/build/';
   // in Native

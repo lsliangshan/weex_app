@@ -2,12 +2,12 @@
   <div class="app-header-container" :style="{'background-color': state.appHeader.theme}">
     <text class="app-header" :style="{'color': state.appHeader.color}">{{dataTitle || state.appHeader.title}}</text>
     <div class="nav-back-container" v-if="canGoBack" @click="back">
-      <image class="nav-back" src="http://static.dei2.com/imgs/icon-back.png" resize="cover"></image>
+      <image class="nav-back" src="https://static.dei2.com/imgs/icon-back.png" resize="cover"></image>
     </div>
     <div class="geolocation-container" v-else-if="dataShowLocation || state.geolocation.shown" @click="showPopup">
       <text class="location-text">{{state.geolocation.city || '全国'}}</text>
-      <image class="arrow-down" src="http://static.dei2.com/app/arrow_down.png" v-if="state.geolocation.finished" resize="cover"></image>
-      <image class="arrow-down" src="http://static.dei2.com/app/loading.gif" v-if="!state.geolocation.finished" resize="cover"></image>
+      <image class="arrow-down" src="https://static.dei2.com/app/arrow_down.png" v-if="state.geolocation.finished" resize="cover"></image>
+      <image class="arrow-down" src="https://static.dei2.com/app/loading.gif" v-if="!state.geolocation.finished" resize="cover"></image>
     </div>
     <div class="user-container" v-if="dataShowUserContainer">
       <div class="has-login" v-if="state.isLogin" @click="navigateTo('/pages/Profile.js')">
@@ -162,7 +162,7 @@
       },
       getLocationCity (opts) {
         fetch({
-          url: 'http://talkapi.dei2.com/index/getCityInfoByLatLng?lat=' + opts.lat + '&lng=' + opts.lng,
+          url: 'https://talkapi.dei2.com/index/getCityInfoByLatLng?lat=' + opts.lat + '&lng=' + opts.lng,
           callback: function (res) {
             opts.callback && opts.callback(res)
           }

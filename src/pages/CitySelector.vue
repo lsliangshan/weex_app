@@ -82,7 +82,7 @@
     data () {
       const that = this
       fetch({
-        url: 'http://static.dei2.com/resources/city.json',
+        url: 'https://static.dei2.com/resources/city.json',
         callback: function (res) {
           if (Number(res.status) === 200) {
             that.cities = res.data

@@ -66,7 +66,7 @@
   export default {
     data () {
       return {
-        logoUrl: 'http://img1.vued.vanthink.cn/vued08aa73a9ab65dcbd360ec54659ada97c.png',
+        logoUrl: 'https://img1.vued.vanthink.cn/vued08aa73a9ab65dcbd360ec54659ada97c.png',
         target: 'World3'
       }
     },

@@ -15,7 +15,7 @@
       <div class="popup-header-container" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
         <text class="popup-title">{{state.popup.title}}</text>
         <div class="popup-close-container" @click="hidePopup">
-          <image class="popup-close" src="http://static.dei2.com/imgs/icon-close.png" resize="cover"></image>
+          <image class="popup-close" src="https://static.dei2.com/imgs/icon-close.png" resize="cover"></image>
           <!--<text class="popup-close">×</text>-->
         </div>
       </div>

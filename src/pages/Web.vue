@@ -5,7 +5,7 @@
       <web ref="webview" :src="url" :style="{height: (state.platform == 'web' ? (state.device.height - 120) / state.device.dpr : (750 / state.device.width * state.device.height - 120)) + 'px'}" class="webview" @pagestart="start" @pagefinish="finish" @error="error"></web>
       <div class="loading-container" v-if="showInitLoading" ref="loadingContainer" :style="{height: (state.platform == 'web' ? (state.device.height - 120) / state.device.dpr : (750 / state.device.width * state.device.height - 120)) + 'px'}">
         <div class="loading-wrapper">
-          <image src="http://static.dei2.com/app/loading06.gif" resize="cover" class="loading-image"></image>
+          <image src="https://static.dei2.com/app/loading06.gif" resize="cover" class="loading-image"></image>
         </div>
       </div>
     </div>
